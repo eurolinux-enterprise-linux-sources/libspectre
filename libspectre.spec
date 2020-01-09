@@ -1,6 +1,6 @@
 Name:           libspectre
 Version:        0.2.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A library for rendering PostScript(TM) documents
 
 Group:          System Environment/Libraries
@@ -8,6 +8,9 @@ License:        GPLv2+
 URL:            http://libspectre.freedesktop.org
 Source0:        http://libspectre.freedesktop.org/releases/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=667717 
+Patch0: libspectre-allocate-at-least-1-page-in-doc-pages.patch
 
 BuildRequires: ghostscript-devel >= 8.61
 
@@ -31,7 +34,7 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-
+%patch0 -p1 -b .allocate-at-least-1-page-in-doc-pages
 
 %build
 %configure --disable-static
@@ -67,6 +70,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Dec 1 2015 Felipe Borges <feborges@redhat.com> - 0.2.4-2
+- Allocate at least 1 page if there are no Pages: or Page: comments in the PS file
+- Resolves: #667717
+
 * Mon Mar 22 2010  Marek Kasik <mkasik@redhat.com> - 0.2.4-1
 - Update to 0.2.4
 - Resolves: #575899
