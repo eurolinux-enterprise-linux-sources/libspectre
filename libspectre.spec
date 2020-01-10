@@ -1,12 +1,14 @@
 Name:           libspectre
-Version:        0.2.7
-Release:        4%{?dist}
+Version:        0.2.8
+Release:        1%{?dist}
 Summary:        A library for rendering PostScript(TM) documents
 
 Group:          System Environment/Libraries
 License:        GPLv2+
 URL:            http://libspectre.freedesktop.org
 Source0:        http://libspectre.freedesktop.org/releases/%{name}-%{version}.tar.gz
+
+Patch0:         0001-state-what-lib-is-printing-the-error.patch
 
 BuildRequires: ghostscript-devel >= 8.61
 
@@ -30,6 +32,7 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+%patch0 -p1 -b .error-message
 
 
 %build
@@ -65,6 +68,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Feb  9 2017 Marek Kasik <mkasik@redhat.com> - 0.2.8-1
+- Update to 0.2.8
+- Resolves: #1384956
+
 * Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 0.2.7-4
 - Mass rebuild 2014-01-24
 

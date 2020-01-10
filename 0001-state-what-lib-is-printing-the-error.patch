@@ -1,0 +1,48 @@
+From f88d2c259242936bbc3c74bf43107626c0f5ad61 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Caol=C3=A1n=20McNamara?= <caolanm@redhat.com>
+Date: Fri, 13 Jan 2017 09:56:14 +0000
+Subject: [PATCH] state what lib is printing the error
+
+and where it originally came from
+
+so its clear where
+
+"undefined -21" came from in cases like
+https://bugzilla.gnome.org/show_bug.cgi?id=678500
+
+https://bugs.freedesktop.org/show_bug.cgi?id=99395
+---
+ libspectre/spectre-gs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/libspectre/spectre-gs.c b/libspectre/spectre-gs.c
+index b701942..414175a 100644
+--- a/libspectre/spectre-gs.c
++++ b/libspectre/spectre-gs.c
+@@ -55,12 +55,12 @@ critic_error_code (int code)
+ 	if (code <= -100) {
+ 		switch (code) {
+ 			case e_Fatal:
+-				fprintf (stderr, "fatal internal error %d", code);
++				fprintf (stderr, "(libspectre) ghostscript reports: fatal internal error %d", code);
+ 				return TRUE;
+ 				break;
+ 
+ 			case e_ExecStackUnderflow:
+-				fprintf (stderr, "stack overflow %d", code);
++				fprintf (stderr, "(libspectre) ghostscript reports: stack overflow %d", code);
+ 				return TRUE;
+ 				break;
+ 
+@@ -73,7 +73,7 @@ critic_error_code (int code)
+ 		int x = (-1) * code;
+ 
+ 		if (x < (int) (sizeof (errors) / sizeof (const char*))) {
+-			fprintf (stderr, "%s %d\n", errors[x], code);
++			fprintf (stderr, "(libspectre) ghostscript reports: %s %d\n", errors[x], code);
+ 		}
+ 		return TRUE;
+ 	}
+-- 
+2.9.3
+
